@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>可愛互動留言板</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', '微軟正黑體', sans-serif;
+      background: linear-gradient(to right, #fceabb, #f8b500);
+      padding: 2rem;
+      margin: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #fff;
+      margin-bottom: 1rem;
+      text-shadow: 1px 1px 4px #333;
+    }
+
+    #commentForm {
+      display: flex;
+      flex-direction: column;
+      max-width: 400px;
+      margin: 0 auto 2rem auto;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    #commentForm input, #commentForm button {
+      margin-bottom: 0.8rem;
+      padding: 0.8rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    #commentForm button {
+      background-color: #f8b500;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+
+    #commentForm button:hover {
+      background-color: #e29b00;
+    }
+
+    .comment-box {
+      max-width: 400px;
+      margin: 0 auto 1rem auto;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .comment-box:hover {
+      transform: scale(1.01);
+    }
+
+    .comment-title {
+      font-weight: bold;
+      color: #f8b500;
+      margin-bottom: 0.5rem;
+    }
+
+    .comment-content {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.4s ease;
+      transform: translateY(-10px);
+    }
+
+    .comment-box.active .comment-content {
+      max-height: 500px;
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>可愛互動留言板 ✨</h1>
+
+  <form id="commentForm">
+    <input type="text" id="name" placeholder="你的名字" required>
+    <input type="text" id="message" placeholder="寫下你的留言" required>
+    <button type="submit">送出留言 💬</button>
+  </form>
+
+  <div id="commentsContainer"></div>
+
+  <script>
+    document.getElementById('commentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !message) return;
+
+      const box = document.createElement('div');
+      box.className = 'comment-box';
+      box.innerHTML = `
+        <div class="comment-title">${name}：</div>
+        <div class="comment-content">${message}</div>
+      `;
+
+      box.addEventListener('click', () => {
+        box.classList.toggle('active');
+      });
+
+      const container = document.getElementById('commentsContainer');
+      container.insertBefore(box, container.firstChild);
+
+      document.getElementById('commentForm').reset();
+    });
+  </script>
+
+</body>
+</html>
